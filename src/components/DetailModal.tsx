@@ -38,8 +38,8 @@ export const DetailModal = (props: DetailModalProps) => {
 
   return (
     <div className="Modal">
-      <div className="Modal__overlay flex-center">
-        <div className="Modal__detail flex-col" ref={modalRef}>
+      <div className="Modal__overlay">
+        <div className="Modal__detail" ref={modalRef}>
           <button className="Modal__detail__close" onClick={props.onClose}>
             ❌
           </button>
@@ -52,7 +52,7 @@ export const DetailModal = (props: DetailModalProps) => {
           <div className="Modal__detail__field Modal__detail__field-img">
             <strong>Flag:</strong>
             <div
-              className="image-placeholder"
+              className="Modal__detail__field__picture"
               style={{ backgroundImage: `url("${props.details.flags.png}")` }}
             ></div>
           </div>
@@ -60,7 +60,7 @@ export const DetailModal = (props: DetailModalProps) => {
             <div className="Modal__detail__field Modal__detail__field-img">
               <strong>Coat Of Arms:</strong>
               <div
-                className="image-placeholder"
+                className="Modal__detail__field__picture"
                 style={{
                   backgroundImage: `url("${props.details.coatOfArms.png}")`,
                 }}
