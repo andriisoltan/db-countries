@@ -4,7 +4,11 @@ import { ColDef, GridReadyEvent } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 
 import { APICountry, Country, FlatObject } from "./types";
+import { DetailModal } from "./components/DetailModal";
+
 import "./App.scss";
+
+// TODO: favs
 
 const getCurrencies = (currencies?: FlatObject) => {
   if (!currencies) return "";
@@ -32,18 +36,26 @@ const normalizeCountryData = (country: APICountry): Country => {
     flag: country.flag,
     currencies: getCurrencies(country.currencies),
     languages: getLanguages(country.languages),
+    population: country.population,
+
+    details: {
+      capital: country.capital,
+      cioc: country.cioc,
+      coatOfArms: country.coatOfArms,
+      flags: country.flags,
+      maps: country.maps,
+      region: country.region,
+    }
   };
 };
 
 function App() {
   const gridRef = useRef<AgGridReact>(null);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [rowData, setRowData] = useState<Country[]>([]);
-  const defaultColDef = useMemo<ColDef>(() => {
-    return {
-      flex: 1,
-    };
-  }, []);
+  const defaultColDef = useMemo<ColDef>(() => ({
+    flex: 1,
+  }), []);
 
   const onGridReady = useCallback((params: GridReadyEvent) => {
     fetch("https://restcountries.com/v3.1/all")
@@ -51,55 +63,46 @@ function App() {
       .then((data: APICountry[]) => {
         const formattedData = data.map(normalizeCountryData);
         setRowData(formattedData);
-      });
-  }, []);
-
-  const onFilterTextBoxChanged = useCallback(() => {
-    gridRef.current!.api.setGridOption(
-      "quickFilterText",
-      (document.getElementById("filter-text-box") as HTMLInputElement).value
-    );
+      })
+      .catch(reject => alert(reject)); // TODO: change alert
   }, []);
 
   const onRowClicked = (e: { data: Country }) => {
-    setSelectedCountry(e.data.name);
+    setSelectedCountry(e.data);
   };
 
   return (
     <div className="App">
-      <input
-        type="text"
-        id="filter-text-box"
-        placeholder="Filter..."
-        onInput={onFilterTextBoxChanged}
-      />
-      <div
-        className="ag-theme-alpine"
-        style={{ height: "100%", width: "100%" }}
-      >
+      <div className="App__table ag-theme-alpine">
         <AgGridReact
           ref={gridRef}
           rowData={rowData}
-          columnDefs={[
+          columnDefs={[ // TODO: useMemo
             {
               field: "name",
               headerCheckboxSelection: true,
               headerCheckboxSelectionFilteredOnly: true,
               checkboxSelection: true,
+              filter: true,
             },
             { field: "flag", sortable: false },
-            { field: "currencies" },
-            { field: "languages" },
+            { field: "currencies", filter: true, },
+            { field: "languages", filter: true, },
+            { field: "population" },
           ]}
           defaultColDef={defaultColDef}
           onGridReady={onGridReady}
           onRowClicked={onRowClicked}
           rowSelection="multiple"
+          suppressRowClickSelection
+          gridOptions={{ // TODO: useMemo
+            pagination: true,
+          }}
         />
       </div>
       {selectedCountry &&
         createPortal(
-          <div className="App__modal">Clicked {selectedCountry}</div>,
+          <DetailModal {...selectedCountry} onClose={() => setSelectedCountry(null)} />,
           document.body
         )}
     </div>

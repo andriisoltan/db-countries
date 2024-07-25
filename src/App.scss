@@ -1,21 +1,36 @@
 .App {
-    height: 100vh;
-    width: 100vw;
-    background-color: #fafafa;
-    padding: 5vh 10vw;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fafafa;
+  padding: 5vh 10vw;
 
-    &__modal {
-        position: fixed;
-        background-color: #ebebeb;
-        left: 20px;
-        top: 20px;
+  &__table {
+    height: 100%;
+    width: 100%;
+    
+    .ag-root-wrapper {
+      cursor: pointer;
     }
+  }
 
-    .ag-checkbox-input-wrapper.ag-checked::after {
-        background-color: white;
-        content: "★";
-        color: #efef18;
-        width: 0;
-        top: -2px;
-    }
+  .ag-checkbox-input-wrapper.ag-checked::after {
+    background-color: white;
+    content: "★";
+    color: #efef18;
+    width: 0;
+    top: -2px;
+  }
+}
+
+.flex {
+  &-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-col {
+    display: flex;
+    flex-direction: column;
+  }
 }
