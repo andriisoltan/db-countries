@@ -34,11 +34,9 @@
 
   .ag-input-field-input.ag-checkbox-input {
     cursor: pointer;
-
   }
 
   .ag-checkbox-input-wrapper.ag-checked {
-
     &::after {
       background-color: white;
       content: "★";

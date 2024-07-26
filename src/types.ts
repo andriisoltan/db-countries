@@ -1,4 +1,6 @@
 export type FlatObject = Record<string, any>;
+export type CountryRecord = Record<string, boolean>;
+export type APIError = { message: string };
 
 export interface APICountry {
   // table
