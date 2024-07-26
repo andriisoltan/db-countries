@@ -1,3 +1,12 @@
+### Your typical 'Create React App' Application based on it's TypeScript template, so the install and run of it is pretty straightforward.
+**There are some things added on top of it though, such as:**
+
+1) `ag-grid`, as per requirements
+2) `lodash.debounce` to optimize user interactions
+3) `modern-normalize` for css normalization
+4) `react-toastify` for network error notifications
+5) `sass` as a personal preference way of styling
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
